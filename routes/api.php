@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/loans',[LoanController::class, 'index']);
     Route::post('/loans', [LoanController::class, 'store']);
     Route::get('/loans/{id}',[LoanController::class, 'show']);
-    Route::post('/loans/{id}/return', [LoanController::class, 'returnBook']);
+    Route::put('/loans/{id}', [LoanController::class, 'returnBook']);
     Route::get('/loans/overdue', [LoanController::class, 'overdue']);
+
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->middleware('admin');
 
 });

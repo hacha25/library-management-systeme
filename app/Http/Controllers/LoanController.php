@@ -36,7 +36,6 @@ class LoanController extends Controller
     }
     public function store(Request $request){
         $request->validate([
-            'user_id' => 'required|exists:users,id',
             'book_isbn' => 'required|exists:books,isbn',
         ]);
         return DB::transaction(function() use ($request) {
@@ -46,7 +45,7 @@ class LoanController extends Controller
             return response()->json(['message' => 'Book not available'],400);
             };
 
-            $alreadyBorrowed = Loan::where('user_id', $request->user_id)
+            $alreadyBorrowed = Loan::where('user_id', $request->user()->id)
                             ->where('book_isbn', $request->book_isbn)
                             ->where('status', 'borrowed')
                             ->lockForUpdate()
@@ -56,7 +55,7 @@ class LoanController extends Controller
             }
 
             $loan = Loan::create([
-                'user_id' => $request->user_id,
+                'user_id' => $request->user()->id,
                 'book_isbn' => $request->book_isbn,
                 'loan_date' => now(),
                 'due_date' => now()->addDays(14),
@@ -70,7 +69,7 @@ class LoanController extends Controller
 
     public function returnBook($id){
         return DB::transaction(function() use ($id){
-            $loan = Loan::  lockForUpdate()->findOrFail($id);
+            $loan = Loan::lockForUpdate()->findOrFail($id);
         if($loan->status == 'returned'){
             return response()->json(['message' => "Book already returned"],400);
         }

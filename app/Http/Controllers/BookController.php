@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Http\Resources\BookResource;
 
 class BookController extends Controller implements HasMiddleware
 {
@@ -25,8 +26,12 @@ class BookController extends Controller implements HasMiddleware
         if($request->search) {
             $query->where('title', 'like','%'.$request->search.'%');
         }
+        // filter by author
+        if($request->author) {
+            $query->where('author', "like","%".$request->author."%");
+        }
         $books = $query->paginate(10);
-        return response()->json($books);
+        return BookResource::collection($books);
     }
 
     public function store(Request $request){
@@ -51,18 +56,18 @@ class BookController extends Controller implements HasMiddleware
     }
 
     public function show($isbn){
-        return Book::findOrFail($isbn);
+        $book = Book::findOrFail($isbn);
+        return response()->json([$book]);
     }
 
     public function update(Request $request, $isbn){
         $book = Book::findOrFail($isbn);
         $request->validate([
-            'title' => $request->title,
-            'author' => $request->author,
-            'category_name' => $request->category_name,
-            'published_date' => $request->published_date,
-            'quantity' => $request->quantity,
-            'available' => $request->quantity,
+            'title' => 'required',
+            'author' => 'required',
+            'category_name' => 'required',
+            'published_date' => 'nullable|date',
+            'quantity' => 'required|integer|min:1',
         ]);
         $book->update($request->only([
             'title', 'author', 'category_name', 'published_date', 'quantity', 'available'
