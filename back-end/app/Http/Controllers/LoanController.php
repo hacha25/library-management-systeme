@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LoanResource;
 use App\Models\Book;
 use App\Models\Loan;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class LoanController extends Controller
 
         $loans = $query->paginate(10);
 
-        return response()->json($loans);
+        return LoanResource::collection($loans);
     }
 
     public function show($id){

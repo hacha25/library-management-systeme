@@ -12,12 +12,14 @@ namespace App\Models {
      * @property string $category_name
      * @property string|null $published_date
      * @property string $author
+     * @property string|null $image
      * @property string $title
      * @property string $isbn
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Loan> $loans
      * @property-read int|null $loans_count
      * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book whereIsbn($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book whereTitle($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book whereImage($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book whereAuthor($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book wherePublishedDate($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Book>|Book whereCategoryName($value)

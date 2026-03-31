@@ -38,15 +38,23 @@ class BookController extends Controller implements HasMiddleware
         $request->validate([
             'isbn' => 'required|unique:books,isbn',
             'title' => 'required',
+            'image' => 'nullable|image',
             'author' => 'required',
             'category_name' => 'required',
             'published_date' => 'nullable|date',
             'quantity' => 'required|integer|min:1',
         ]);
+
+        $imgPath = null;
+        if($request->hasFile('image')) {
+            $imgPath = $request->file('image')->store('books', 'public');
+        }
+   
         $book = Book::create([
             'isbn' => $request->isbn,
             'title' => $request->title,
             'author' => $request->author,
+            'image' => $imgPath,
             'category_name' => $request->category_name,
             'published_date' => $request->published_date,
             'quantity' => $request->quantity,
@@ -57,18 +65,19 @@ class BookController extends Controller implements HasMiddleware
 
     public function show($isbn){
         $book = Book::findOrFail($isbn);
-        return response()->json([$book]);
+        return response()->json($book);
     }
 
     public function update(Request $request, $isbn){
         $book = Book::findOrFail($isbn);
         $request->validate([
             'title' => 'required',
-            'author' => 'required',
+            'author' => 'required', 
             'category_name' => 'required',
             'published_date' => 'nullable|date',
             'quantity' => 'required|integer|min:1',
         ]);
+        
         $book->update($request->only([
             'title', 'author', 'category_name', 'published_date', 'quantity', 'available'
         ]));
