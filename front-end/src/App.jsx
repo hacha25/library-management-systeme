@@ -7,6 +7,11 @@ import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
 import Books from "./pages/admin/Books";
 import CreateBook from "./pages/admin/createBook";
+import EditBook from "./pages/admin/EditBook";
+
+// USER IMPORTS
+import Library from "./pages/user/Library";
+import MyLoans from "./pages/user/MyLoans";
 
 function App() {
   return (
@@ -46,16 +51,38 @@ function App() {
             </ProtectedRoutes>
           }
         />
-
-        {/* USER */}
+        {/* ADMIN EDIT BOOK */}
         <Route
-          path="/home"
+          path="/admin/books/edit/:isbn"
           element={
-            <ProtectedRoutes role="user">
-              <h1>User Library</h1>
+            <ProtectedRoutes>
+              <AdminLayout>
+                <EditBook />
+              </AdminLayout>
             </ProtectedRoutes>
           }
         />
+
+        {/* USER  LIBRARY*/}
+        <Route
+          path="/library"
+          element={
+            <ProtectedRoutes role="user">
+              <Library />
+            </ProtectedRoutes>
+          }
+        />
+
+        {/* USER   LOANS*/}
+          <Route
+          path="/my-loans"
+          element={
+            <ProtectedRoutes role="user">
+              <MyLoans />
+            </ProtectedRoutes>
+          }
+        />
+
       </Routes>
     </BrowserRouter>
   );

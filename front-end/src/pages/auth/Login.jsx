@@ -30,7 +30,7 @@ export default function Login() {
             if (user.role === 'admin'){
                 navigate('/admin/dashboard')
             }else {
-                navigate('/home')
+                navigate('/library')
             }
 
 
@@ -48,6 +48,7 @@ export default function Login() {
         <input
           className="border p-2 w-full mb-2"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -55,6 +56,7 @@ export default function Login() {
           type="password"
           className="border p-2 w-full mb-4"
           placeholder="Password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
