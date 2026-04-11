@@ -15,7 +15,8 @@ class Book extends Model
         'published_date' => 'date',
     ];
 
-    protected $fillable = ['isbn','title', 'author','category_name','published_date','quantity','available'];
+    protected $fillable = ['isbn','title', 'author','category_name','published_date','quantity','available', 'image'];
+    
     public function loans(){
         return $this->hasMany(Loan::class,'book_isbn','isbn');
     }
