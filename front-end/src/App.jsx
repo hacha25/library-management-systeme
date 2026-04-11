@@ -12,6 +12,8 @@ import EditBook from "./pages/admin/EditBook";
 // USER IMPORTS
 import Library from "./pages/user/Library";
 import MyLoans from "./pages/user/MyLoans";
+import UserLayout from "./layouts/UserLayout";
+import Loans from "./pages/admin/Loans";
 
 function App() {
   return (
@@ -63,12 +65,26 @@ function App() {
           }
         />
 
+        {/* ADMIN LOANS */}
+        <Route
+          path="/admin/loans"
+          element={
+            <ProtectedRoutes>
+              <AdminLayout>
+                <Loans />
+              </AdminLayout>
+            </ProtectedRoutes>
+          }
+         />
+
         {/* USER  LIBRARY*/}
         <Route
           path="/library"
           element={
             <ProtectedRoutes role="user">
-              <Library />
+              <UserLayout>
+                <Library />
+              </UserLayout>
             </ProtectedRoutes>
           }
         />
@@ -78,7 +94,9 @@ function App() {
           path="/my-loans"
           element={
             <ProtectedRoutes role="user">
-              <MyLoans />
+              <UserLayout>
+                <MyLoans />
+              </UserLayout>
             </ProtectedRoutes>
           }
         />

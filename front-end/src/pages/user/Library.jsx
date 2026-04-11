@@ -3,11 +3,12 @@ import api from "../../services/api";
 
 export default function Library() {
     const [books, setBooks] = useState([]);
+    const [search, setSearch] = useState("")
 
     useEffect(() => {
-        api.get("/books")
+        api.get(`/books?search=${search}`)
         .then( res => setBooks(res.data.data))
-    },[])
+    },[search])
 
     const handleBorrow = (isbn) => {
         api.post('/loans', {book_isbn: isbn})
@@ -17,7 +18,16 @@ export default function Library() {
 
     return (
         <div>
-            <h1 className="text-2xl mb-6">Library</h1>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl ">Library</h1>
+                <input
+                type="text"
+                placeholder="Search book ..."
+                onChange={(e) => setSearch(e.target.value)}
+                className="border p-2  rounded"
+                />
+            </div>
+            
 
             <div className="grid grid-cols-4 gap-6">
 
